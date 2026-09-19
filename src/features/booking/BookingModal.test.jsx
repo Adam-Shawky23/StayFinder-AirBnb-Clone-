@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { beforeEach, expect, test } from 'vitest';
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { AuthProvider } from '../auth/AuthContext';
 import BookingModal from './BookingModal';
 
@@ -15,10 +15,21 @@ beforeEach(() => {
     'stayfinder_auth',
     JSON.stringify({ user: { id: 'u1', name: 'Demo User', email: 'demo@stayfinder.com' }, token: 't' })
   );
+
+  // Freeze "today" so the calendar deterministically opens on September 2026,
+  // regardless of when this suite actually runs. shouldAdvanceTime keeps real
+  // wall-clock time flowing for things like MSW's simulated network delay(),
+  // while still letting us pin the "current date" the calendar reads.
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+  vi.setSystemTime(new Date('2026-09-19T12:00:00'));
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });
 
 test('shows a price breakdown once a date range is picked, and confirms a booking', async () => {
-  const user = userEvent.setup();
+  const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
   render(
     <MemoryRouter>
       <AuthProvider>
