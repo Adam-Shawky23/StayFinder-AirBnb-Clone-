@@ -8,6 +8,7 @@ import SignupPage from './pages/SignupPage.jsx';
 import WishlistPage from './pages/WishlistPage.jsx';
 import TripsPage from './pages/TripsPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
+import RequireAuth from './features/auth/RequireAuth.jsx';
 
 export default function App() {
   return (
@@ -18,7 +19,7 @@ export default function App() {
         <Route path="/listing/:id" element={<ListingDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/wishlist" element={<RequireAuth><WishlistPage /></RequireAuth>} />
         <Route path="/trips" element={<TripsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>

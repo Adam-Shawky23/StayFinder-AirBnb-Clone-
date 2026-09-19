@@ -1,15 +1,19 @@
 import { Link } from 'react-router-dom';
 import Rating from '../../components/ui/Rating';
+import WishlistButton from '../wishlist/WishlistButton';
 
 export default function ListingCard({ listing }) {
   return (
     <Link to={`/listing/${listing.id}`} className="group block">
-      <div className="aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
         <img
           src={listing.images[0]}
           alt={listing.title}
           className="h-full w-full object-cover transition-transform group-hover:scale-105"
         />
+        <div className="absolute right-2 top-2">
+          <WishlistButton listing={listing} />
+        </div>
       </div>
       <div className="mt-2">
         <p className="text-sm text-gray-500">{listing.location.city}, {listing.location.country}</p>

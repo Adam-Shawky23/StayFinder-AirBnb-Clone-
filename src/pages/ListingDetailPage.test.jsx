@@ -1,13 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import ListingDetailPage from './ListingDetailPage';
+import { AuthProvider } from '../features/auth/AuthContext';
+import { WishlistProvider } from '../features/wishlist/WishlistContext';
 
 function renderDetail(id) {
   return render(
     <MemoryRouter initialEntries={[`/listing/${id}`]}>
-      <Routes>
-        <Route path="/listing/:id" element={<ListingDetailPage />} />
-      </Routes>
+      <AuthProvider>
+        <WishlistProvider>
+          <Routes>
+            <Route path="/listing/:id" element={<ListingDetailPage />} />
+          </Routes>
+        </WishlistProvider>
+      </AuthProvider>
     </MemoryRouter>
   );
 }

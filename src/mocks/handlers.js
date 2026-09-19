@@ -61,4 +61,33 @@ export const handlers = [
     const { password: _pw, ...publicUser } = user;
     return HttpResponse.json({ user: publicUser, token: crypto.randomUUID() });
   }),
+
+  http.get('/api/wishlist', async ({ request }) => {
+    await delay(LATENCY_MS);
+    const userId = new URL(request.url).searchParams.get('userId');
+    const db = getDb();
+    const listingIds = db.wishlist.filter((w) => w.userId === userId).map((w) => w.listingId);
+    const listings = SEED_LISTINGS.filter((l) => listingIds.includes(l.id));
+    return HttpResponse.json(listings);
+  }),
+
+  http.post('/api/wishlist', async ({ request }) => {
+    await delay(LATENCY_MS);
+    const { userId, listingId } = await request.json();
+    updateDb((db) => {
+      if (!db.wishlist.some((w) => w.userId === userId && w.listingId === listingId)) {
+        db.wishlist.push({ userId, listingId });
+      }
+    });
+    return HttpResponse.json({ ok: true }, { status: 201 });
+  }),
+
+  http.delete('/api/wishlist/:listingId', async ({ request, params }) => {
+    await delay(LATENCY_MS);
+    const userId = new URL(request.url).searchParams.get('userId');
+    updateDb((db) => {
+      db.wishlist = db.wishlist.filter((w) => !(w.userId === userId && w.listingId === params.listingId));
+    });
+    return HttpResponse.json({ ok: true });
+  }),
 ];

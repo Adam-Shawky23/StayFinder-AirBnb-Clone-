@@ -9,6 +9,7 @@ import Skeleton from '../components/ui/Skeleton';
 import ErrorState from '../components/ui/ErrorState';
 import ReviewList from '../features/reviews/ReviewList';
 import ListingMap from '../features/map/ListingMap';
+import WishlistButton from '../features/wishlist/WishlistButton';
 
 export default function ListingDetailPage() {
   const { id } = useParams();
@@ -93,7 +94,10 @@ export default function ListingDetailPage() {
         </div>
 
         <aside className="h-fit rounded-xl border border-gray-200 p-4 shadow-sm">
-          <p className="text-xl font-semibold">${listing.pricePerNight} <span className="text-sm font-normal text-gray-500">/ night</span></p>
+          <div className="flex items-center justify-between">
+            <p className="text-xl font-semibold">${listing.pricePerNight} <span className="text-sm font-normal text-gray-500">/ night</span></p>
+            <WishlistButton listing={listing} />
+          </div>
           <p className="mt-1 text-sm text-gray-500">Up to {listing.maxGuests} guests</p>
         </aside>
       </div>

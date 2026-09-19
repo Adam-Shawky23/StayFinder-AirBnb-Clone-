@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import ListingGrid from './ListingGrid';
+import { AuthProvider } from '../auth/AuthContext';
+import { WishlistProvider } from '../wishlist/WishlistContext';
 
 const listing = {
   id: 'l1', title: 'Test Loft', pricePerNight: 100, rating: 4.5, reviewCount: 10,
@@ -10,7 +12,11 @@ const listing = {
 function renderGrid(props) {
   return render(
     <MemoryRouter>
-      <ListingGrid listings={[]} status="idle" error={null} {...props} />
+      <AuthProvider>
+        <WishlistProvider>
+          <ListingGrid listings={[]} status="idle" error={null} {...props} />
+        </WishlistProvider>
+      </AuthProvider>
     </MemoryRouter>
   );
 }
