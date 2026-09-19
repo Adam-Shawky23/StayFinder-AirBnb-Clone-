@@ -19,7 +19,7 @@ export default function ListingCard({ listing }) {
         <p className="text-sm text-gray-500">{listing.location.city}, {listing.location.country}</p>
         <h3 className="truncate font-medium text-gray-900">{listing.title}</h3>
         <div className="mt-1 flex items-center justify-between">
-          <Rating value={listing.rating} />
+          <Rating value={listing.rating} reviewCount={listing.reviewCount} />
           <p className="font-semibold">${listing.pricePerNight} <span className="font-normal text-gray-500">/ night</span></p>
         </div>
       </div>

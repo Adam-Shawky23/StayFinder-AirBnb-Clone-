@@ -3,6 +3,7 @@ import { useAuth } from '../features/auth/AuthContext';
 import { getUserBookings } from '../features/booking/bookingApi';
 import BookingSummaryCard from '../features/booking/BookingSummaryCard';
 import EmptyState from '../components/ui/EmptyState';
+import ErrorState from '../components/ui/ErrorState';
 import Skeleton from '../components/ui/Skeleton';
 
 export default function TripsPage() {
@@ -26,6 +27,7 @@ export default function TripsPage() {
       <h1 className="text-2xl font-bold">Your trips</h1>
       <div className="mt-6 space-y-4">
         {status === 'loading' && <Skeleton className="h-24 w-full" />}
+        {status === 'error' && <ErrorState message="Couldn't load your trips." />}
         {status === 'success' && bookings.length === 0 && (
           <EmptyState title="No trips booked yet" description="Find a place and reserve your first stay." />
         )}

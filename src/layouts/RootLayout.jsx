@@ -31,6 +31,8 @@ export default function RootLayout() {
           <button
             className="sm:hidden"
             aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
             onClick={() => setMenuOpen((open) => !open)}
           >
             <span className="block h-0.5 w-6 bg-gray-800 mb-1" />
@@ -39,7 +41,7 @@ export default function RootLayout() {
           </button>
         </div>
         {menuOpen && (
-          <nav className="flex flex-col gap-3 border-t border-gray-100 px-4 py-3 sm:hidden">
+          <nav id="mobile-nav" className="flex flex-col gap-3 border-t border-gray-100 px-4 py-3 sm:hidden">
             <NavLink to="/search" className={navLinkClass} onClick={() => setMenuOpen(false)}>Explore</NavLink>
             <NavLink to="/wishlist" className={navLinkClass} onClick={() => setMenuOpen(false)}>Wishlist</NavLink>
             <NavLink to="/trips" className={navLinkClass} onClick={() => setMenuOpen(false)}>Trips</NavLink>
