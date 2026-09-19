@@ -8,6 +8,7 @@ import Avatar from '../components/ui/Avatar';
 import Skeleton from '../components/ui/Skeleton';
 import ErrorState from '../components/ui/ErrorState';
 import ReviewList from '../features/reviews/ReviewList';
+import ListingMap from '../features/map/ListingMap';
 
 export default function ListingDetailPage() {
   const { id } = useParams();
@@ -83,6 +84,11 @@ export default function ListingDetailPage() {
           <div className="mt-8">
             <h2 className="mb-4 font-semibold">Reviews</h2>
             <ReviewList listingId={listing.id} />
+          </div>
+
+          <div className="mt-8">
+            <h2 className="mb-4 font-semibold">Where you'll be</h2>
+            <ListingMap lat={listing.location.lat} lng={listing.location.lng} title={listing.title} />
           </div>
         </div>
 
