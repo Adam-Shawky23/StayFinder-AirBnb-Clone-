@@ -2,12 +2,15 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 import { AuthProvider } from './features/auth/AuthContext';
+import { WishlistProvider } from './features/wishlist/WishlistContext';
 
 test('renders the home page at /', () => {
   render(
     <MemoryRouter initialEntries={['/']}>
       <AuthProvider>
-        <App />
+        <WishlistProvider>
+          <App />
+        </WishlistProvider>
       </AuthProvider>
     </MemoryRouter>
   );
@@ -19,7 +22,9 @@ test('renders a 404 page for unknown routes', () => {
   render(
     <MemoryRouter initialEntries={['/nope']}>
       <AuthProvider>
-        <App />
+        <WishlistProvider>
+          <App />
+        </WishlistProvider>
       </AuthProvider>
     </MemoryRouter>
   );
