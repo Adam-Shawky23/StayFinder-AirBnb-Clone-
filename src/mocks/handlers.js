@@ -39,9 +39,10 @@ export const handlers = [
   http.post('/api/auth/signup', async ({ request }) => {
     await delay(LATENCY_MS);
     const { name, email, password } = await request.json();
+    const normalizedEmail = email.trim().toLowerCase();
     const db = getDb();
     const allUsers = [...SEED_USERS, ...db.users];
-    if (allUsers.some((u) => u.email === email)) {
+    if (allUsers.some((u) => u.email.trim().toLowerCase() === normalizedEmail)) {
       return HttpResponse.json({ message: 'An account with that email already exists' }, { status: 409 });
     }
     const user = { id: crypto.randomUUID(), name, email, password };
@@ -53,9 +54,10 @@ export const handlers = [
   http.post('/api/auth/login', async ({ request }) => {
     await delay(LATENCY_MS);
     const { email, password } = await request.json();
+    const normalizedEmail = email.trim().toLowerCase();
     const db = getDb();
     const allUsers = [...SEED_USERS, ...db.users];
-    const user = allUsers.find((u) => u.email === email && u.password === password);
+    const user = allUsers.find((u) => u.email.trim().toLowerCase() === normalizedEmail && u.password === password);
     if (!user) {
       return HttpResponse.json({ message: 'Invalid email or password' }, { status: 401 });
     }
@@ -118,9 +120,17 @@ export const handlers = [
     if (!listing) {
       return HttpResponse.json({ message: 'Listing not found' }, { status: 404 });
     }
+    const db = getDb();
+    const existingBookings = db.bookings.filter((b) => b.listingId === listingId);
+    const overlaps = existingBookings.some(
+      (b) => checkIn < b.checkOut && b.checkIn < checkOut
+    );
+    if (overlaps) {
+      return HttpResponse.json({ message: 'Those dates are no longer available' }, { status: 409 });
+    }
     const { total } = calculatePrice(listing.pricePerNight, checkIn, checkOut);
     const booking = { id: crypto.randomUUID(), listingId, userId, checkIn, checkOut, guests, totalPrice: total };
-    updateDb((db) => db.bookings.push(booking));
+    updateDb((d) => d.bookings.push(booking));
     return HttpResponse.json({ ...booking, listing }, { status: 201 });
   }),
 ];
