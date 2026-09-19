@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../../components/ui/Button';
 
 export default function SearchBar({ initialValues, onSearch }) {
@@ -6,6 +6,13 @@ export default function SearchBar({ initialValues, onSearch }) {
   const [checkIn, setCheckIn] = useState(initialValues.checkIn);
   const [checkOut, setCheckOut] = useState(initialValues.checkOut);
   const [guests, setGuests] = useState(initialValues.guests);
+
+  useEffect(() => {
+    setLocation(initialValues.location);
+    setCheckIn(initialValues.checkIn);
+    setCheckOut(initialValues.checkOut);
+    setGuests(initialValues.guests);
+  }, [initialValues.location, initialValues.checkIn, initialValues.checkOut, initialValues.guests]);
 
   function handleSubmit(e) {
     e.preventDefault();
