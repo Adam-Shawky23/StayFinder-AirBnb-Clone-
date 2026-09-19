@@ -2,6 +2,7 @@ import { http, HttpResponse, delay } from 'msw';
 import { SEED_LISTINGS, SEED_REVIEWS, SEED_USERS } from './seedData';
 import { filterListings } from '../features/search/filterListings';
 import { getDb, updateDb } from './db';
+import { calculatePrice } from '../features/booking/calculatePrice';
 
 const LATENCY_MS = 400;
 
@@ -89,5 +90,37 @@ export const handlers = [
       db.wishlist = db.wishlist.filter((w) => !(w.userId === userId && w.listingId === params.listingId));
     });
     return HttpResponse.json({ ok: true });
+  }),
+
+  http.get('/api/listings/:id/bookings', async ({ params }) => {
+    await delay(LATENCY_MS);
+    const db = getDb();
+    const ranges = db.bookings
+      .filter((b) => b.listingId === params.id)
+      .map(({ checkIn, checkOut }) => ({ checkIn, checkOut }));
+    return HttpResponse.json(ranges);
+  }),
+
+  http.get('/api/bookings', async ({ request }) => {
+    await delay(LATENCY_MS);
+    const userId = new URL(request.url).searchParams.get('userId');
+    const db = getDb();
+    const bookings = db.bookings
+      .filter((b) => b.userId === userId)
+      .map((b) => ({ ...b, listing: SEED_LISTINGS.find((l) => l.id === b.listingId) }));
+    return HttpResponse.json(bookings);
+  }),
+
+  http.post('/api/bookings', async ({ request }) => {
+    await delay(LATENCY_MS);
+    const { listingId, userId, checkIn, checkOut, guests } = await request.json();
+    const listing = SEED_LISTINGS.find((l) => l.id === listingId);
+    if (!listing) {
+      return HttpResponse.json({ message: 'Listing not found' }, { status: 404 });
+    }
+    const { total } = calculatePrice(listing.pricePerNight, checkIn, checkOut);
+    const booking = { id: crypto.randomUUID(), listingId, userId, checkIn, checkOut, guests, totalPrice: total };
+    updateDb((db) => db.bookings.push(booking));
+    return HttpResponse.json({ ...booking, listing }, { status: 201 });
   }),
 ];
