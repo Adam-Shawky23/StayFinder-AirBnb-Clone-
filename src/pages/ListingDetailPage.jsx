@@ -7,6 +7,7 @@ import Badge from '../components/ui/Badge';
 import Avatar from '../components/ui/Avatar';
 import Skeleton from '../components/ui/Skeleton';
 import ErrorState from '../components/ui/ErrorState';
+import ReviewList from '../features/reviews/ReviewList';
 
 export default function ListingDetailPage() {
   const { id } = useParams();
@@ -77,6 +78,11 @@ export default function ListingDetailPage() {
             <div className="mt-2 flex flex-wrap gap-2">
               {listing.amenities.map((a) => <Badge key={a}>{a}</Badge>)}
             </div>
+          </div>
+
+          <div className="mt-8">
+            <h2 className="mb-4 font-semibold">Reviews</h2>
+            <ReviewList listingId={listing.id} />
           </div>
         </div>
 
