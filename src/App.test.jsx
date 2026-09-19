@@ -1,11 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
+import { AuthProvider } from './features/auth/AuthContext';
 
 test('renders the home page at /', () => {
   render(
     <MemoryRouter initialEntries={['/']}>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </MemoryRouter>
   );
   expect(screen.getByRole('link', { name: /stayfinder/i })).toBeInTheDocument();
@@ -15,7 +18,9 @@ test('renders the home page at /', () => {
 test('renders a 404 page for unknown routes', () => {
   render(
     <MemoryRouter initialEntries={['/nope']}>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </MemoryRouter>
   );
   expect(screen.getByText(/page not found/i)).toBeInTheDocument();

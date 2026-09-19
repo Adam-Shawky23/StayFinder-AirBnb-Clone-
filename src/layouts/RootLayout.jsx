@@ -1,11 +1,13 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from '../features/auth/AuthContext';
 
 const navLinkClass = ({ isActive }) =>
   `text-sm font-medium ${isActive ? 'text-brand-600' : 'text-gray-600 hover:text-gray-900'}`;
 
 export default function RootLayout() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   return (
     <div className="flex min-h-full flex-col">
@@ -18,7 +20,13 @@ export default function RootLayout() {
             <NavLink to="/search" className={navLinkClass}>Explore</NavLink>
             <NavLink to="/wishlist" className={navLinkClass}>Wishlist</NavLink>
             <NavLink to="/trips" className={navLinkClass}>Trips</NavLink>
-            <NavLink to="/login" className={navLinkClass}>Log in</NavLink>
+            {user ? (
+              <button onClick={logout} className="text-sm font-medium text-gray-600 hover:text-gray-900">
+                Log out ({user.name})
+              </button>
+            ) : (
+              <NavLink to="/login" className={navLinkClass}>Log in</NavLink>
+            )}
           </nav>
           <button
             className="sm:hidden"
@@ -35,7 +43,19 @@ export default function RootLayout() {
             <NavLink to="/search" className={navLinkClass} onClick={() => setMenuOpen(false)}>Explore</NavLink>
             <NavLink to="/wishlist" className={navLinkClass} onClick={() => setMenuOpen(false)}>Wishlist</NavLink>
             <NavLink to="/trips" className={navLinkClass} onClick={() => setMenuOpen(false)}>Trips</NavLink>
-            <NavLink to="/login" className={navLinkClass} onClick={() => setMenuOpen(false)}>Log in</NavLink>
+            {user ? (
+              <button
+                onClick={() => {
+                  logout();
+                  setMenuOpen(false);
+                }}
+                className="text-sm font-medium text-gray-600 hover:text-gray-900"
+              >
+                Log out ({user.name})
+              </button>
+            ) : (
+              <NavLink to="/login" className={navLinkClass} onClick={() => setMenuOpen(false)}>Log in</NavLink>
+            )}
           </nav>
         )}
       </header>

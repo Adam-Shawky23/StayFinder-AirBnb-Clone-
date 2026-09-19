@@ -1,6 +1,7 @@
 import { http, HttpResponse, delay } from 'msw';
-import { SEED_LISTINGS, SEED_REVIEWS } from './seedData';
+import { SEED_LISTINGS, SEED_REVIEWS, SEED_USERS } from './seedData';
 import { filterListings } from '../features/search/filterListings';
+import { getDb, updateDb } from './db';
 
 const LATENCY_MS = 400;
 
@@ -32,5 +33,32 @@ export const handlers = [
   http.get('/api/listings/:id/reviews', async ({ params }) => {
     await delay(LATENCY_MS);
     return HttpResponse.json(SEED_REVIEWS.filter((r) => r.listingId === params.id));
+  }),
+
+  http.post('/api/auth/signup', async ({ request }) => {
+    await delay(LATENCY_MS);
+    const { name, email, password } = await request.json();
+    const db = getDb();
+    const allUsers = [...SEED_USERS, ...db.users];
+    if (allUsers.some((u) => u.email === email)) {
+      return HttpResponse.json({ message: 'An account with that email already exists' }, { status: 409 });
+    }
+    const user = { id: crypto.randomUUID(), name, email, password };
+    updateDb((d) => d.users.push(user));
+    const { password: _pw, ...publicUser } = user;
+    return HttpResponse.json({ user: publicUser, token: crypto.randomUUID() }, { status: 201 });
+  }),
+
+  http.post('/api/auth/login', async ({ request }) => {
+    await delay(LATENCY_MS);
+    const { email, password } = await request.json();
+    const db = getDb();
+    const allUsers = [...SEED_USERS, ...db.users];
+    const user = allUsers.find((u) => u.email === email && u.password === password);
+    if (!user) {
+      return HttpResponse.json({ message: 'Invalid email or password' }, { status: 401 });
+    }
+    const { password: _pw, ...publicUser } = user;
+    return HttpResponse.json({ user: publicUser, token: crypto.randomUUID() });
   }),
 ];
