@@ -11,7 +11,7 @@ export default function RootLayout() {
 
   return (
     <div className="flex min-h-full flex-col">
-      <header className="border-b border-gray-200 bg-white">
+      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <Link to="/" className="text-xl font-bold text-brand-500">
             stayfinder
