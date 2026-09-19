@@ -15,7 +15,7 @@ frontend architecture, mock API integration, and end-to-end user flows without a
 
 ## Tech stack
 
-React 18 · Vite · React Router · Tailwind CSS · Mock Service Worker (MSW) · Leaflet · react-day-picker · Vitest · React Testing Library
+React 19 · Vite · React Router · Tailwind CSS · Mock Service Worker (MSW) · Leaflet · react-day-picker · Vitest · React Testing Library
 
 ## Why a mocked backend?
 
