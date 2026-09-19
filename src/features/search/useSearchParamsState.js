@@ -18,7 +18,7 @@ export function useSearchParamsState() {
     };
   }, [searchParams]);
 
-  function setFilters(partial) {
+  function setFilters(partial, { replace = true } = {}) {
     const next = new URLSearchParams(searchParams);
     Object.entries(partial).forEach(([key, value]) => {
       const isEmpty = value === '' || value === undefined || (Array.isArray(value) && value.length === 0);
@@ -28,7 +28,7 @@ export function useSearchParamsState() {
         next.set(key, Array.isArray(value) ? value.join(',') : String(value));
       }
     });
-    setSearchParams(next);
+    setSearchParams(next, { replace });
   }
 
   return [filters, setFilters];
