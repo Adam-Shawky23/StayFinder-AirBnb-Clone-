@@ -1,8 +1,10 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
+import { http, HttpResponse } from 'msw';
 import { beforeEach, expect, test } from 'vitest';
 import { AuthProvider, useAuth } from '../auth/AuthContext';
 import { WishlistProvider, useWishlist } from './WishlistContext';
 import { updateDb } from '../../mocks/db';
+import { server } from '../../test/server';
 
 function wrapper({ children }) {
   return (
@@ -73,4 +75,26 @@ test('logging out while the initial fetch is in flight does not repopulate the w
   });
 
   expect(result.current.wishlist.listingIds).toEqual([]);
+});
+
+test('toggle rolls back the optimistic update when the server request fails', async () => {
+  localStorage.setItem(
+    'stayfinder_auth',
+    JSON.stringify({ user: { id: 'u1', email: 'demo@stayfinder.com' }, token: 't' })
+  );
+
+  const { result } = renderHook(() => useWishlist(), { wrapper });
+
+  await waitFor(() => expect(result.current.listingIds).toEqual([]));
+
+  server.use(
+    http.post('/api/wishlist', () => HttpResponse.json({ message: 'Server error' }, { status: 500 }))
+  );
+
+  await act(async () => {
+    await result.current.toggle({ id: 'l1' });
+  });
+
+  // The optimistic add should have been rolled back after the POST failed.
+  expect(result.current.isWishlisted('l1')).toBe(false);
 });

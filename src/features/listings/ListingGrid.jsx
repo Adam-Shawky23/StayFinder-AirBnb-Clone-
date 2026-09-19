@@ -3,7 +3,14 @@ import EmptyState from '../../components/ui/EmptyState';
 import ErrorState from '../../components/ui/ErrorState';
 import ListingCard from './ListingCard';
 
-export default function ListingGrid({ listings, status, error, onRetry }) {
+export default function ListingGrid({
+  listings,
+  status,
+  error,
+  onRetry,
+  emptyTitle = 'No listings found',
+  emptyDescription = 'Try adjusting your search or filters.',
+}) {
   if (status === 'loading') {
     return (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -23,7 +30,7 @@ export default function ListingGrid({ listings, status, error, onRetry }) {
   }
 
   if (status === 'success' && listings.length === 0) {
-    return <EmptyState title="No listings found" description="Try adjusting your search or filters." />;
+    return <EmptyState title={emptyTitle} description={emptyDescription} />;
   }
 
   return (
