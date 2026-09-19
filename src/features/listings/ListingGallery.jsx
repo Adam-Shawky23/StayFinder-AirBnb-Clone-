@@ -9,12 +9,12 @@ export default function ListingGallery({ images, title }) {
         <img src={images[active]} alt={title} className="h-full w-full object-cover" />
       </div>
       {images.length > 1 && (
-        <div className="mt-2 flex gap-2">
+        <div className="mt-2 flex gap-2 overflow-x-auto">
           {images.map((src, i) => (
             <button
               key={src}
               onClick={() => setActive(i)}
-              className={`h-16 w-24 overflow-hidden rounded-lg border-2 ${i === active ? 'border-brand-500' : 'border-transparent'}`}
+              className={`h-16 w-24 shrink-0 overflow-hidden rounded-lg border-2 ${i === active ? 'border-brand-500' : 'border-transparent'}`}
             >
               <img src={src} alt="" className="h-full w-full object-cover" />
             </button>

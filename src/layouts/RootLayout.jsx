@@ -29,7 +29,8 @@ export default function RootLayout() {
             )}
           </nav>
           <button
-            className="sm:hidden"
+            type="button"
+            className="-m-3 p-3 sm:hidden"
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
