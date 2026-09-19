@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { getListing } from '../features/listings/listingsApi';
 import ListingGallery from '../features/listings/ListingGallery';
 import Rating from '../components/ui/Rating';
@@ -17,6 +17,7 @@ import { useAuth } from '../features/auth/AuthContext';
 export default function ListingDetailPage() {
   const { id } = useParams();
   const { user } = useAuth();
+  const location = useLocation();
   const [bookingOpen, setBookingOpen] = useState(false);
   const [state, setState] = useState({ status: 'loading', listing: null, error: null });
 
@@ -108,7 +109,7 @@ export default function ListingDetailPage() {
             <Button onClick={() => setBookingOpen(true)} className="mt-4 w-full">Reserve</Button>
           ) : (
             <p className="mt-4 text-sm text-gray-500">
-              <Link to="/login" className="text-brand-600">Log in</Link> to book this stay.
+              <Link to="/login" state={{ from: location }} className="text-brand-600">Log in</Link> to book this stay.
             </p>
           )}
           <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} listing={listing} />
