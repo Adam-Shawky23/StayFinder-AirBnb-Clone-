@@ -10,6 +10,7 @@ export function WishlistProvider({ children }) {
   const toggledRef = useRef(false);
 
   useEffect(() => {
+    let cancelled = false;
     toggledRef.current = false;
     if (!user) {
       setListings([]);
@@ -17,11 +18,14 @@ export function WishlistProvider({ children }) {
     }
     wishlistApi.getWishlist(user.id)
       .then((data) => {
-        if (!toggledRef.current) setListings(data);
+        if (!cancelled && !toggledRef.current) setListings(data);
       })
       .catch(() => {
-        if (!toggledRef.current) setListings([]);
+        if (!cancelled && !toggledRef.current) setListings([]);
       });
+    return () => {
+      cancelled = true;
+    };
   }, [user]);
 
   const listingIds = listings.map((l) => l.id);

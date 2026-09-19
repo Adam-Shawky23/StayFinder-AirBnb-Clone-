@@ -1,7 +1,8 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, expect, test } from 'vitest';
-import { AuthProvider } from '../auth/AuthContext';
+import { AuthProvider, useAuth } from '../auth/AuthContext';
 import { WishlistProvider, useWishlist } from './WishlistContext';
+import { updateDb } from '../../mocks/db';
 
 function wrapper({ children }) {
   return (
@@ -42,4 +43,34 @@ test('toggling a listing adds and removes it from the wishlist', async () => {
     await result2.current.toggle({ id: 'l1' });
   });
   await waitFor(() => expect(result2.current.isWishlisted('l1')).toBe(false));
+});
+
+test('logging out while the initial fetch is in flight does not repopulate the wishlist with the stale user\'s data', async () => {
+  // Seed a wishlist entry for u1 so the in-flight GET (fired on mount) would
+  // resolve with a non-empty list if it were allowed to land after logout.
+  updateDb((db) => {
+    db.wishlist.push({ userId: 'u1', listingId: 'l1' });
+  });
+  localStorage.setItem(
+    'stayfinder_auth',
+    JSON.stringify({ user: { id: 'u1', email: 'demo@stayfinder.com' }, token: 't' })
+  );
+
+  const { result } = renderHook(() => ({ auth: useAuth(), wishlist: useWishlist() }), { wrapper });
+
+  // Log out immediately, before the mocked 400ms latency on the initial
+  // GET /api/wishlist for u1 has had a chance to resolve.
+  act(() => {
+    result.current.auth.logout();
+  });
+
+  expect(result.current.wishlist.listingIds).toEqual([]);
+
+  // Wait comfortably past the mocked GET latency to let the stale in-flight
+  // request for u1 settle, then confirm it never repopulated the list.
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 700));
+  });
+
+  expect(result.current.wishlist.listingIds).toEqual([]);
 });
