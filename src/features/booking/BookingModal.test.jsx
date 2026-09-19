@@ -53,4 +53,9 @@ test('shows a price breakdown once a date range is picked, and confirms a bookin
   await user.click(screen.getByRole('button', { name: /reserve/i }));
 
   await waitFor(() => expect(screen.getByText(/booking confirmed/i)).toBeInTheDocument());
+
+  // Regression check for the timezone bug: toISOString()-based conversion
+  // shifts local-midnight dates by a day outside UTC. Assert the confirmation
+  // card shows the exact dates that were clicked, not one day off.
+  expect(screen.getByText(/2026-10-10 → 2026-10-13/)).toBeInTheDocument();
 });

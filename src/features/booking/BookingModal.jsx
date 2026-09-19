@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import { useAuth } from '../auth/AuthContext';
 import Modal from '../../components/ui/Modal';
 import Button from '../../components/ui/Button';
@@ -9,7 +10,7 @@ import BookingSummaryCard from './BookingSummaryCard';
 import { getBookedRanges, createBooking } from './bookingApi';
 
 function toISODate(date) {
-  return date.toISOString().slice(0, 10);
+  return format(date, 'yyyy-MM-dd');
 }
 
 export default function BookingModal({ open, onClose, listing }) {
