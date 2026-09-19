@@ -20,7 +20,7 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/wishlist" element={<RequireAuth><WishlistPage /></RequireAuth>} />
-        <Route path="/trips" element={<TripsPage />} />
+        <Route path="/trips" element={<RequireAuth><TripsPage /></RequireAuth>} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
