@@ -5,8 +5,8 @@ export default function ListingGallery({ images, title }) {
 
   return (
     <div>
-      <div className="aspect-[16/9] overflow-hidden rounded-xl bg-gray-100">
-        <img src={images[active]} alt={title} className="h-full w-full object-cover" />
+      <div className="aspect-[16/9] overflow-hidden rounded-2xl bg-stone-100 shadow-soft">
+        <img src={images[active]} alt={title} className="h-full w-full object-cover transition-opacity duration-300" />
       </div>
       {images.length > 1 && (
         <div className="mt-2 flex gap-2 overflow-x-auto">
@@ -14,7 +14,7 @@ export default function ListingGallery({ images, title }) {
             <button
               key={src}
               onClick={() => setActive(i)}
-              className={`h-16 w-24 shrink-0 overflow-hidden rounded-lg border-2 ${i === active ? 'border-brand-500' : 'border-transparent'}`}
+              className={`h-16 w-24 shrink-0 overflow-hidden rounded-xl border-2 transition-colors ${i === active ? 'border-brand-500' : 'border-transparent hover:border-stone-300'}`}
             >
               <img src={src} alt="" className="h-full w-full object-cover" />
             </button>

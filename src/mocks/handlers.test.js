@@ -1,4 +1,5 @@
 import { beforeEach, expect, test } from 'vitest';
+import { SEED_LISTINGS } from './seedData';
 
 beforeEach(() => {
   localStorage.clear();
@@ -8,7 +9,7 @@ test('GET /api/listings returns all seed listings', async () => {
   const res = await fetch('/api/listings');
   const body = await res.json();
   expect(res.status).toBe(200);
-  expect(body.length).toBe(12);
+  expect(body.length).toBe(SEED_LISTINGS.length);
 });
 
 test('GET /api/listings/:id returns a single listing', async () => {

@@ -1,8 +1,10 @@
+import NotFoundState from '../components/ui/NotFoundState';
+
 export default function NotFoundPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-24 text-center">
-      <h1 className="text-2xl font-bold">Page not found</h1>
-      <p className="mt-2 text-gray-600">The page you're looking for doesn't exist.</p>
-    </div>
+    <NotFoundState
+      title="This page doesn't exist"
+      description="The link might be broken, or the page may have moved. Let's get you back on track."
+    />
   );
 }

@@ -23,20 +23,20 @@ export default function ReviewList({ listingId }) {
     };
   }, [listingId]);
 
-  if (status === 'loading') return <p className="text-sm text-gray-500">Loading reviews…</p>;
+  if (status === 'loading') return <p className="text-sm text-stone-500">Loading reviews…</p>;
   if (status === 'error') return <p className="text-sm text-red-600">Couldn't load reviews.</p>;
-  if (reviews.length === 0) return <p className="text-sm text-gray-500">No reviews yet.</p>;
+  if (reviews.length === 0) return <p className="text-sm text-stone-500">No reviews yet.</p>;
 
   return (
     <ul className="space-y-4">
       {reviews.map((review) => (
-        <li key={review.id} className="border-t border-gray-100 pt-4">
+        <li key={review.id} className="border-t border-stone-100 pt-4">
           <div className="flex items-center justify-between">
             <p className="font-medium">{review.author}</p>
-            <p className="text-sm text-gray-500">{review.date}</p>
+            <p className="text-sm text-stone-500">{review.date}</p>
           </div>
-          <p className="mt-1 text-sm text-gray-500">★ {review.rating}</p>
-          <p className="mt-1 text-gray-700">{review.comment}</p>
+          <p className="mt-1 text-sm text-stone-500">★ {review.rating}</p>
+          <p className="mt-1 text-stone-700">{review.comment}</p>
         </li>
       ))}
     </ul>

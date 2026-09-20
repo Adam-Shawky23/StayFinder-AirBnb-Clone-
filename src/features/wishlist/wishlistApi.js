@@ -1,11 +1,13 @@
+import { fetchJson } from '../../lib/http';
+
 export async function getWishlist(userId) {
-  const res = await fetch(`/api/wishlist?userId=${encodeURIComponent(userId)}`);
+  const { res, data } = await fetchJson(`/api/wishlist?userId=${encodeURIComponent(userId)}`);
   if (!res.ok) throw new Error('Failed to load wishlist');
-  return res.json();
+  return data;
 }
 
 export async function addToWishlist(userId, listingId) {
-  const res = await fetch('/api/wishlist', {
+  const { res } = await fetchJson('/api/wishlist', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId, listingId }),
@@ -14,6 +16,8 @@ export async function addToWishlist(userId, listingId) {
 }
 
 export async function removeFromWishlist(userId, listingId) {
-  const res = await fetch(`/api/wishlist/${listingId}?userId=${encodeURIComponent(userId)}`, { method: 'DELETE' });
+  const { res } = await fetchJson(`/api/wishlist/${listingId}?userId=${encodeURIComponent(userId)}`, {
+    method: 'DELETE',
+  });
   if (!res.ok) throw new Error('Failed to remove from wishlist');
 }

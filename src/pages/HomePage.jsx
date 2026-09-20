@@ -16,13 +16,15 @@ export default function HomePage() {
 
   return (
     <div>
-      <div className="border-b border-gray-100 bg-gradient-to-b from-brand-50 to-white">
+      <div className="border-b border-stone-100 bg-gradient-to-b from-brand-50 to-white">
         <div className="mx-auto max-w-6xl px-4 py-16 text-center">
-          <h1 className="text-3xl font-bold sm:text-5xl">Find your next stay</h1>
-          <p className="mx-auto mt-3 max-w-xl text-gray-600">
-            Search homes, cabins, and apartments around the world.
+          <h1 className="animate-fade-slide-up text-3xl font-extrabold tracking-tight sm:text-5xl">
+            Find your next stay
+          </h1>
+          <p className="mx-auto mt-3 max-w-xl animate-fade-slide-up text-stone-600 [animation-delay:100ms]">
+            Search homes, cabins, and villas in more than a dozen cities around the world.
           </p>
-          <div className="mx-auto mt-8 max-w-2xl text-left">
+          <div className="mx-auto mt-8 max-w-2xl animate-fade-slide-up text-left [animation-delay:200ms]">
             <SearchBar initialValues={{ location: '', checkIn: '', checkOut: '', guests: '' }} onSearch={handleSearch} />
           </div>
         </div>

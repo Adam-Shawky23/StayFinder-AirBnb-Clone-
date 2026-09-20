@@ -14,7 +14,7 @@ const defaultIcon = L.icon({
 
 export default function ListingMap({ lat, lng, title }) {
   return (
-    <div className="h-72 overflow-hidden rounded-xl">
+    <div className="h-72 overflow-hidden rounded-2xl shadow-soft">
       <MapContainer center={[lat, lng]} zoom={13} scrollWheelZoom={false} className="h-full w-full">
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

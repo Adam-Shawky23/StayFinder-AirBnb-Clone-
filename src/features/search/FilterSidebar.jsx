@@ -46,13 +46,13 @@ export default function FilterSidebar({ filters, onChange }) {
           <input
             type="number" placeholder="Min" value={minPrice}
             onChange={handleMinPriceChange}
-            className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+            className="w-full rounded-lg border border-stone-200 bg-stone-50 px-2 py-1.5 text-sm transition-colors focus:border-brand-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100"
           />
           <span>–</span>
           <input
             type="number" placeholder="Max" value={maxPrice}
             onChange={handleMaxPriceChange}
-            className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+            className="w-full rounded-lg border border-stone-200 bg-stone-50 px-2 py-1.5 text-sm transition-colors focus:border-brand-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100"
           />
         </div>
       </div>
@@ -62,7 +62,7 @@ export default function FilterSidebar({ filters, onChange }) {
         <select
           value={filters.propertyType}
           onChange={(e) => onChange({ propertyType: e.target.value })}
-          className="w-full rounded-md border border-gray-300 px-2 py-1 text-sm"
+          className="w-full rounded-lg border border-stone-200 bg-stone-50 px-2 py-1.5 text-sm transition-colors focus:border-brand-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100"
         >
           <option value="">Any</option>
           {PROPERTY_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}

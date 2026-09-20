@@ -8,6 +8,8 @@ import Avatar from '../components/ui/Avatar';
 import Skeleton from '../components/ui/Skeleton';
 import ErrorState from '../components/ui/ErrorState';
 import Button from '../components/ui/Button';
+import Breadcrumbs from '../components/ui/Breadcrumbs';
+import NotFoundState from '../components/ui/NotFoundState';
 import ReviewList from '../features/reviews/ReviewList';
 import ListingMap from '../features/map/ListingMap';
 import WishlistButton from '../features/wishlist/WishlistButton';
@@ -49,7 +51,14 @@ export default function ListingDetailPage() {
   }
 
   if (state.status === 'not-found') {
-    return <div className="mx-auto max-w-5xl px-4 py-16 text-center text-gray-600">Listing not found.</div>;
+    return (
+      <NotFoundState
+        title="Listing not found"
+        description="This stay may have been removed, or the link is incorrect. Try browsing other places to stay."
+        primaryAction={{ label: 'Browse stays', to: '/search' }}
+        secondaryAction={{ label: 'Go home', to: '/' }}
+      />
+    );
   }
 
   if (state.status === 'error') {
@@ -60,8 +69,17 @@ export default function ListingDetailPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="text-2xl font-bold sm:text-3xl">{listing.title}</h1>
-      <p className="mt-1 text-gray-500">{listing.location.city}, {listing.location.country}</p>
+      <Breadcrumbs
+        items={[
+          { label: 'Home', to: '/' },
+          { label: 'Search', to: '/search' },
+          { label: `${listing.location.city}, ${listing.location.country}`, to: `/search?location=${encodeURIComponent(listing.location.city)}` },
+          { label: listing.title },
+        ]}
+      />
+
+      <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{listing.title}</h1>
+      <p className="mt-1 text-stone-500">{listing.location.city}, {listing.location.country}</p>
 
       <div className="mt-4">
         <ListingGallery images={listing.images} title={listing.title} />
@@ -73,11 +91,11 @@ export default function ListingDetailPage() {
             <Avatar src={listing.host.avatar} alt={listing.host.name} />
             <div>
               <p className="font-medium">Hosted by {listing.host.name}</p>
-              <p className="text-sm text-gray-500">Joined in {listing.host.joinedYear}</p>
+              <p className="text-sm text-stone-500">Joined in {listing.host.joinedYear}</p>
             </div>
           </div>
 
-          <p className="mt-6 text-gray-700">{listing.description}</p>
+          <p className="mt-6 text-stone-700">{listing.description}</p>
 
           <Rating value={listing.rating} reviewCount={listing.reviewCount} />
 
@@ -99,16 +117,16 @@ export default function ListingDetailPage() {
           </div>
         </div>
 
-        <aside className="h-fit rounded-xl border border-gray-200 p-4 shadow-sm">
+        <aside className="h-fit rounded-3xl border border-stone-200 bg-white p-5 shadow-soft md:sticky md:top-24">
           <div className="flex items-center justify-between">
-            <p className="text-xl font-semibold">${listing.pricePerNight} <span className="text-sm font-normal text-gray-500">/ night</span></p>
+            <p className="text-xl font-semibold">${listing.pricePerNight} <span className="text-sm font-normal text-stone-500">/ night</span></p>
             <WishlistButton listing={listing} />
           </div>
-          <p className="mt-1 text-sm text-gray-500">Up to {listing.maxGuests} guests</p>
+          <p className="mt-1 text-sm text-stone-500">Up to {listing.maxGuests} guests</p>
           {user ? (
             <Button onClick={() => setBookingOpen(true)} className="mt-4 w-full">Reserve</Button>
           ) : (
-            <p className="mt-4 text-sm text-gray-500">
+            <p className="mt-4 text-sm text-stone-500">
               <Link to="/login" state={{ from: location }} className="text-brand-600">Log in</Link> to book this stay.
             </p>
           )}

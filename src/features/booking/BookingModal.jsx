@@ -56,7 +56,7 @@ export default function BookingModal({ open, onClose, listing }) {
     <Modal open={open} onClose={handleClose} title={status === 'success' ? 'Booking confirmed' : `Reserve ${listing.title}`}>
       {status === 'success' ? (
         <div className="space-y-4">
-          <p className="text-gray-700">Your stay is booked. Details below.</p>
+          <p className="text-stone-700">Your stay is booked. Details below.</p>
           <BookingSummaryCard booking={confirmedBooking} />
           <div className="flex gap-2">
             <Link to="/trips"><Button variant="secondary">View my trips</Button></Link>
@@ -67,11 +67,11 @@ export default function BookingModal({ open, onClose, listing }) {
         <div className="space-y-4">
           <DateRangePicker bookedRanges={bookedRanges} value={range} onChange={setRange} />
           <label className="block text-sm">
-            <span className="text-gray-600">Guests</span>
+            <span className="text-stone-600">Guests</span>
             <input
               type="number" min={1} max={listing.maxGuests} value={guests}
               onChange={(e) => setGuests(Number(e.target.value))}
-              className="mt-1 w-20 rounded-md border border-gray-300 px-3 py-2"
+              className="mt-1 w-20 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2 transition-colors focus:border-brand-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100"
             />
           </label>
           <PriceBreakdown pricePerNight={listing.pricePerNight} checkIn={checkIn} checkOut={checkOut} />

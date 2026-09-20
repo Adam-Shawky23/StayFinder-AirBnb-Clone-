@@ -28,5 +28,5 @@ test('renders a 404 page for unknown routes', () => {
       </AuthProvider>
     </MemoryRouter>
   );
-  expect(screen.getByText(/page not found/i)).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /this page doesn't exist/i })).toBeInTheDocument();
 });

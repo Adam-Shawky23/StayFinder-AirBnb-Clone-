@@ -1,13 +1,13 @@
 const VARIANTS = {
-  primary: 'bg-brand-500 text-white hover:bg-brand-600 disabled:bg-gray-300',
-  secondary: 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50',
-  ghost: 'bg-transparent text-gray-700 hover:bg-gray-100',
+  primary: 'bg-brand-500 text-white shadow-soft hover:bg-brand-600 hover:shadow-lifted disabled:bg-stone-300 disabled:shadow-none',
+  secondary: 'bg-white text-stone-900 border border-stone-300 hover:bg-stone-50',
+  ghost: 'bg-transparent text-stone-700 hover:bg-stone-100',
 };
 
 export default function Button({ variant = 'primary', className = '', ...props }) {
   return (
     <button
-      className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed ${VARIANTS[variant]} ${className}`}
+      className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200 active:scale-[0.97] disabled:cursor-not-allowed disabled:active:scale-100 ${VARIANTS[variant]} ${className}`}
       {...props}
     />
   );
