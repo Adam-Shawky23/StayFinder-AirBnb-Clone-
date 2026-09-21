@@ -27,7 +27,7 @@ export default function SearchBar({ initialValues, onSearch }) {
       onSubmit={handleSubmit}
       className="flex flex-col gap-3 rounded-2xl border border-stone-200 bg-white p-4 shadow-soft sm:flex-row sm:items-end sm:gap-4"
     >
-      <label className="flex-1 text-sm">
+      <label className="min-w-[140px] flex-1 text-sm sm:min-w-[180px]">
         <span className="block text-stone-500">Where</span>
         <input
           value={location}

@@ -24,7 +24,7 @@ export default function HomePage() {
           <p className="mx-auto mt-3 max-w-xl animate-fade-slide-up text-stone-600 [animation-delay:100ms]">
             Search homes, cabins, and villas in more than a dozen cities around the world.
           </p>
-          <div className="mx-auto mt-8 max-w-2xl animate-fade-slide-up text-left [animation-delay:200ms]">
+          <div className="mx-auto mt-8 max-w-4xl animate-fade-slide-up text-left [animation-delay:200ms]">
             <SearchBar initialValues={{ location: '', checkIn: '', checkOut: '', guests: '' }} onSearch={handleSearch} />
           </div>
         </div>
