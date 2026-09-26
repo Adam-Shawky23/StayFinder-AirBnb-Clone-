@@ -1,3 +1,5 @@
+![Stayfinder](docs/screenshots/cover.png)
+
 # Stayfinder
 
 A responsive, Airbnb-style stay-booking app built with React — a portfolio project demonstrating
